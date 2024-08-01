@@ -4,7 +4,7 @@ import com.gabrielsmm.soapclient.wsdl.AtendeCliente;
 import jakarta.xml.ws.Service;
 
 import javax.xml.namespace.QName;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 public class Conexao {
@@ -17,12 +17,12 @@ public class Conexao {
 
     private static AtendeCliente conexao() {
         try {
-            URL url = new URL(WSDL);
+            URL url = new URI(WSDL).parseServerAuthority().toURL();
             QName qname = new QName(TARGET, NAME);
             Service service = Service.create(url, qname);
             return service.getPort(AtendeCliente.class);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
         return null;
     }
